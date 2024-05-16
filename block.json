@@ -1,0 +1,12 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "extension/pacts-woo-extension",
+	"version": "0.1.0",
+	"title": "Pacts Woo Extension",
+	"category": "widgets",
+	"textdomain": "pacts-woo-extension",
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./build/index.css",
+	"style": "file:./build/style-index.css"
+}
