@@ -53,11 +53,11 @@ function pacts_woo_extension_activate()
 	}
 }
 
-if (!class_exists('PactsWooExtension')) {
+if (!class_exists('PactsExtension')) {
 	/**
 	 * The pacts_woo_extension class.
 	 */
-	class PactsWooExtension
+	class PactsExtension
 	{
 		/**
 		 * This class instance.
@@ -140,7 +140,7 @@ function pacts_woo_extension_init()
 		add_action('admin_notices', 'pacts_woo_extension_missing_wc_notice');
 		return;
 	}
-	PactsWooExtension::instance();
+	PactsExtension::instance();
 }
 
 add_action('plugins_loaded', 'pacts_woo_extension_init', 10);
