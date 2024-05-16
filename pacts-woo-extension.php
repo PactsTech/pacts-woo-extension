@@ -22,8 +22,8 @@ if (!defined('MAIN_PLUGIN_FILE')) {
 
 require_once plugin_dir_path(__FILE__) . '/vendor/autoload_packages.php';
 
-use PactsWooExtension\Admin\Setup;
-use PactsWooExtension\WooCommerce\Register;
+use PactsWooExtension\WooCommerce\PactsGateway;
+use PactsWooExtension\WooCommerce\Blocks\PactsGatewayBlocks;
 
 // phpcs:disable WordPress.Files.FileName
 
@@ -53,11 +53,11 @@ function pacts_woo_extension_activate()
 	}
 }
 
-if (!class_exists('pacts_woo_extension')) {
+if (!class_exists('PactsWooExtension')) {
 	/**
 	 * The pacts_woo_extension class.
 	 */
-	class pacts_woo_extension
+	class PactsWooExtension
 	{
 		/**
 		 * This class instance.
@@ -71,25 +71,8 @@ if (!class_exists('pacts_woo_extension')) {
 		 */
 		public function __construct()
 		{
-			if (is_admin()) {
-				new Setup();
-			}
-		}
-
-		/**
-		 * Cloning is forbidden.
-		 */
-		public function __clone()
-		{
-			wc_doing_it_wrong(__FUNCTION__, __('Cloning is forbidden.', 'pacts_woo_extension'), $this->version);
-		}
-
-		/**
-		 * Unserializing instances of this class is forbidden.
-		 */
-		public function __wakeup()
-		{
-			wc_doing_it_wrong(__FUNCTION__, __('Unserializing instances of this class is forbidden.', 'pacts_woo_extension'), $this->version);
+			add_filter('woocommerce_payment_gateways', [__CLASS__, 'register_gateway']);
+			add_action('woocommerce_blocks_loaded', [__CLASS__, 'register_gateway_blocks']);
 		}
 
 		/**
@@ -101,17 +84,49 @@ if (!class_exists('pacts_woo_extension')) {
 		 */
 		public static function instance()
 		{
-
 			if (null === self::$instance) {
 				self::$instance = new self();
 			}
-
 			return self::$instance;
+		}
+
+		public static function register_gateway($gateways)
+		{
+			$options = get_option('woocommerce_pacts_settings', []);
+			if (isset($options['hide_for_non_admin_users'])) {
+				$hide_for_non_admin_users = $options['hide_for_non_admin_users'];
+			} else {
+				$hide_for_non_admin_users = 'no';
+			}
+			if (('yes' === $hide_for_non_admin_users && current_user_can('manage_options')) || 'no' === $hide_for_non_admin_users) {
+				$gateways[] = PactsGateway::class;
+			}
+			return $gateways;
+		}
+
+		public static function register_gateway_blocks()
+		{
+			if (class_exists('Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType')) {
+				add_action(
+					'woocommerce_blocks_payment_method_type_registration',
+					function (Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry) {
+						$payment_method_registry->register(new PactsGatewayBlocks());
+					}
+				);
+			}
+		}
+
+		public static function plugin_url()
+		{
+			return untrailingslashit(plugins_url('/', __FILE__));
+		}
+
+		public static function plugin_abspath()
+		{
+			return trailingslashit(plugin_dir_path(__FILE__));
 		}
 	}
 }
-
-add_action('plugins_loaded', 'pacts_woo_extension_init', 10);
 
 /**
  * Initialize the plugin.
@@ -121,12 +136,11 @@ add_action('plugins_loaded', 'pacts_woo_extension_init', 10);
 function pacts_woo_extension_init()
 {
 	load_plugin_textdomain('pacts_woo_extension', false, plugin_basename(dirname(__FILE__)) . '/languages');
-
 	if (!class_exists('WooCommerce')) {
 		add_action('admin_notices', 'pacts_woo_extension_missing_wc_notice');
 		return;
 	}
-
-	new Setup();
-	new Register();
+	PactsWooExtension::instance();
 }
+
+add_action('plugins_loaded', 'pacts_woo_extension_init', 10);

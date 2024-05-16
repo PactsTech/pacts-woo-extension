@@ -125,6 +125,7 @@ class PactsGateway extends \WC_Payment_Gateway
 	{
 		global $woocommerce;
 		$order = new \WC_Order($orderId);
+		// TODO verify transaction on-chain
 		$url = $order->get_checkout_order_received_url();
 		$woocommerce->cart->empty_cart();
 		return [
