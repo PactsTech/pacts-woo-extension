@@ -11,58 +11,10 @@ class PactsGateway extends \WC_Payment_Gateway
 	public $id = 'pacts';
 
 	/**
-	 * @var string
-	 */
-	// @phpcs:ignore
-	public $title;
-
-	/**
-	 * @var string
-	 */
-	// @phpcs:ignore
-	public $description;
-
-	/**
-	 * @var string
-	 */
-	// @phpcs:ignore
-	public $enabled;
-
-	/**
-	 * @var string
-	 */
-	// @phpcs:ignore
-	public $method_title;
-
-	/**
-	 * @var string
-	 */
-	// @phpcs:ignore
-	public $method_description;
-
-	/**
-	 * @var string
-	 */
-	// @phpcs:ignore
-	public $order_button_text;
-
-	/**
-	 * @var bool
-	 */
-	// @phpcs:ignore
-	public $has_fields;
-
-	/**
-	 * @var array<string>
-	 */
-	// @phpcs:ignore
-	public $supports;
-
-	/**
 	 * @var array<mixed>
 	 */
 	// @phpcs:ignore
-	public $form_fields;
+	public $addresses;
 
 	public function __construct()
 	{
@@ -75,10 +27,6 @@ class PactsGateway extends \WC_Payment_Gateway
 		$this->init_form_fields();
 		$this->init_settings();
 		$this->has_fields = false;
-		$this->title = $this->get_option('title');
-		$this->enabled = $this->get_option('enabled');
-		$this->description = $this->get_option('description');
-		$this->order_button_text = $this->get_option('order_button_text');
 		add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
 	}
 
@@ -86,38 +34,56 @@ class PactsGateway extends \WC_Payment_Gateway
 	{
 		$this->form_fields = [
 			'enabled' => [
-				'title'       => esc_html__('Enable/Disable', 'pacts'),
-				'label'       => esc_html__('Enable', 'pacts'),
-				'type'        => 'checkbox',
-				'default'     => 'no'
+				'title' => esc_html__('Enable/Disable', 'pacts'),
+				'label' => esc_html__('Enable', 'pacts'),
+				'type' => 'checkbox',
+				'default' => 'no'
 			],
 			'title' => [
-				'title'       => esc_html__('Title', 'pacts'),
-				'type'        => 'text',
+				'title' => esc_html__('Title', 'pacts'),
+				'type' => 'text',
 				'description' => esc_html__(
 					'This controls the title which the user sees during checkout.',
 					'pacts'
 				),
-				'default'     => esc_html__('Pacts', 'pacts')
+				'default' => esc_html__('Pacts', 'pacts')
 			],
 			'description' => [
-				'title'       => esc_html__('Description', 'pacts'),
-				'type'        => 'textarea',
+				'title' => esc_html__('Description', 'pacts'),
+				'type' => 'textarea',
 				'description' => esc_html__(
 					'This controls the description which the user sees during checkout.',
 					'pacts'
 				),
-				'default'     => esc_html__(
+				'default' => esc_html__(
 					'You can pay with supported networks and cryptocurrencies.',
 					'pacts'
 				),
 			],
 			'order_button_text' => [
-				'title'       => esc_html__('Order button text', 'pacts'),
-				'type'        => 'text',
+				'title' => esc_html__('Order button text', 'pacts'),
+				'type' => 'text',
 				'description' => esc_html__('Pay button on the checkout page', 'pacts'),
-				'default'     => esc_html__('Proceed to Pacts', 'pacts'),
+				'default' => esc_html__('Proceed to Pacts', 'pacts'),
 			],
+			'arbitrumAddress' => [
+				'title' => esc_html__('Arbitrum Address', 'pacts'),
+				'type' => 'text',
+				'default' => null,
+				'description' => esc_html__(
+					'Pacts order processor address on Arbitrum',
+					'pacts'
+				),
+			],
+			'arbitrumSepoliaAddress' => [
+				'title' => esc_html__('Arbitrum Sepolia Address', 'pacts'),
+				'type' => 'text',
+				'default' => null,
+				'description' => esc_html__(
+					'Pacts order processor address on Arbitrum Sepolia',
+					'pacts'
+				),
+			]
 		];
 	}
 
