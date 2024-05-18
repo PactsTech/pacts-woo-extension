@@ -1,3 +1,4 @@
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const WooCommerceDependencyExtractionWebpackPlugin = require('@woocommerce/dependency-extraction-webpack-plugin');
 const path = require('path');
@@ -35,6 +36,7 @@ module.exports = {
 		filename: '[name].js',
 	},
 	plugins: [
+		new NodePolyfillPlugin(),
 		...defaultConfig.plugins.filter(
 			(plugin) =>
 				plugin.constructor.name !== 'DependencyExtractionWebpackPlugin'
