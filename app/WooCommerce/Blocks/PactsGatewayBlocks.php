@@ -2,8 +2,8 @@
 
 namespace PactsWooExtension\WooCommerce\Blocks;
 
+use PactsWooExtension\WooCommerce\PactsGateway;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
-use PactsExtension;
 
 final class PactsGatewayBlocks extends AbstractPaymentMethodType
 {
@@ -48,19 +48,9 @@ final class PactsGatewayBlocks extends AbstractPaymentMethodType
 	public function get_payment_method_data()
 	{
 		$settings = $this->gateway->settings;
+		$addresses = PactsGateway::get_addresses($settings);
 		$supports = array_filter($this->gateway->supports, [$this->gateway, 'supports']);
-		$addresses = [];
-		$suffix = 'Address';
-		foreach ($settings as $key => $value) {
-			$ending = substr($key, -strlen($suffix));
-			if ($suffix == $ending && !empty($value)) {
-				$chain = str_replace($suffix, '', $key);
-				$addresses[$chain] = $value;
-			}
-		}
 		return [
-			'title' => $settings['title'],
-			'description' => $settings['description'],
 			'supports' => $supports,
 			'addresses' => $addresses
 		];

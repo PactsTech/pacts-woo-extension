@@ -7,6 +7,9 @@ import { getSetting } from '@woocommerce/settings';
 import * as viemChains from 'viem/chains';
 import { createPublicClient, createWalletClient, custom, publicActions } from 'viem';
 import { getProcessor, setupOrder, submitOrder } from '@pactstech/pacts-viem';
+import { ChainSelector, PactsRow, defineCustomElements } from '@pactstech/react-components';
+
+defineCustomElements();
 
 const { CHECKOUT_STORE_KEY, CART_STORE_KEY } = window.wc.wcBlocksData;
 const settings = getSetting('pacts_data', {});
@@ -14,7 +17,6 @@ const defaultLabel = __('Pacts Payments', 'woo-gutenberg-products-block');
 const { title, addresses, supports } = settings;
 const label = decodeEntities(title) || defaultLabel;
 const chainNames = Object.keys(addresses).map((key) => key.replace('Address', ''));
-const chains = chainNames.map((chainName) => viemChains[chainName]);
 
 const transport = custom(window.ethereum);
 const publicClient = createPublicClient({ transport });
@@ -29,20 +31,21 @@ const Content = ({ eventRegistration, emitResponse }) => {
     const unsubscribe = onPaymentSetup(async () => {
       const checkoutStore = select(CHECKOUT_STORE_KEY);
       const cartStore = select(CART_STORE_KEY);
-      const orderId = checkoutStore.getOrderId();
-      const cartData = cartStore.getCartData();
+      const now = new Date().getTime();
+      const orderId = `${checkoutStore.getOrderId()}-${now}`;
+      const { items, totals } = cartStore.getCartData();
       const chainId = await publicClient.getChainId();
-      const tuple = Object.entries(viemChains).find(([_, chain]) => chain.id === chainId);
-      const chainName = tuple?.[0];
+      const [chainName, chain] = Object.entries(viemChains).find(([_, chain]) => chain.id === chainId);
       const address = addresses[chainName];
-      const processor = getProcessor({ address, client: walletClient });
-      const price = BigInt(cartData.total_price);
-      const shipping = BigInt(cartData.total_shipping);
-      const metadata = cartData.items?.map?.((item) => ({
+      const processor = getProcessor({ chain, address, client: walletClient });
+      const price = Number(totals.total_price) / 100;
+      const shipping = Number(totals.total_shipping) / 100;
+      const metadata = items?.map?.((item) => ({
         name: item.name,
         quantity: item.quantity
       })) || [];
       const args = await setupOrder({
+        chain,
         publicClient,
         walletClient,
         processor,
@@ -51,8 +54,8 @@ const Content = ({ eventRegistration, emitResponse }) => {
         shipping,
         metadata
       });
-      const hash = await submitOrder({ processor, ...args });
-      const receipt = await publicClient.waitForTransactionReceipt({ hash });
+      const hash = await submitOrder({ chain, processor, ...args });
+      const receipt = await publicClient.waitForTransactionReceipt({ chain, hash });
       if (receipt.status !== 'success') {
         return {
           type: emitResponse.responseTypes.ERROR,
@@ -62,7 +65,7 @@ const Content = ({ eventRegistration, emitResponse }) => {
       return {
         type: emitResponse.responseTypes.SUCCESS,
         meta: {
-          paymentMethodData: { transactionHash: hash }
+          paymentMethodData: { chain: chainName, hash, id: orderId }
         }
       }
     });
@@ -74,20 +77,21 @@ const Content = ({ eventRegistration, emitResponse }) => {
   ]);
 
   return (
-    <div>
-      <p>Choose a Chain</p>
-      {chains.map((chain) => (
-        <span key={chain.id} onClick={() => onChainSelected(chain.id)}>
-          {chain.name}
-        </span>
-      ))}
-    </div>
+    <>
+      <span>Choose a Chain</span>
+      <ChainSelector chains={chainNames.join(',')} iconSize='4rem' />
+    </>
   );
 };
 
 const Label = ({ components }) => {
-  const { PaymentMethodLabel } = components;
-  return <PaymentMethodLabel text={label} />;
+  // const { PaymentMethodLabel } = components;
+  // return <PaymentMethodLabel icon={<UsdcSvg />} />;
+  return (
+    <div style={{ flex: '1' }}>
+      <PactsRow token='usdc' />
+    </div>
+  );
 }
 
 registerPaymentMethod({

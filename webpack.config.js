@@ -4,46 +4,46 @@ const WooCommerceDependencyExtractionWebpackPlugin = require('@woocommerce/depen
 const path = require('path');
 
 const wcDepMap = {
-	'@woocommerce/blocks-registry': ['wc', 'wcBlocksRegistry'],
-	'@woocommerce/settings': ['wc', 'wcSettings']
+  '@woocommerce/blocks-registry': ['wc', 'wcBlocksRegistry'],
+  '@woocommerce/settings': ['wc', 'wcSettings']
 };
 
 const wcHandleMap = {
-	'@woocommerce/blocks-registry': 'wc-blocks-registry',
-	'@woocommerce/settings': 'wc-settings'
+  '@woocommerce/blocks-registry': 'wc-blocks-registry',
+  '@woocommerce/settings': 'wc-settings'
 };
 
 const requestToExternal = (request) => {
-	if (wcDepMap[request]) {
-		return wcDepMap[request];
-	}
+  if (wcDepMap[request]) {
+    return wcDepMap[request];
+  }
 };
 
 const requestToHandle = (request) => {
-	if (wcHandleMap[request]) {
-		return wcHandleMap[request];
-	}
+  if (wcHandleMap[request]) {
+    return wcHandleMap[request];
+  }
 };
 
 // Export configuration.
 module.exports = {
-	...defaultConfig,
-	entry: {
-		'frontend/blocks': '/src/index.js',
-	},
-	output: {
-		path: path.resolve(__dirname, 'assets/js'),
-		filename: '[name].js',
-	},
-	plugins: [
-		new NodePolyfillPlugin(),
-		...defaultConfig.plugins.filter(
-			(plugin) =>
-				plugin.constructor.name !== 'DependencyExtractionWebpackPlugin'
-		),
-		new WooCommerceDependencyExtractionWebpackPlugin({
-			requestToExternal,
-			requestToHandle
-		})
-	]
+  ...defaultConfig,
+  entry: {
+    'frontend/blocks': './src/index.js'
+  },
+  output: {
+    path: path.resolve(__dirname, 'assets/js'),
+    filename: '[name].js',
+  },
+  plugins: [
+    new NodePolyfillPlugin(),
+    ...defaultConfig.plugins.filter(
+      (plugin) =>
+        plugin.constructor.name !== 'DependencyExtractionWebpackPlugin'
+    ),
+    new WooCommerceDependencyExtractionWebpackPlugin({
+      requestToExternal,
+      requestToHandle
+    })
+  ]
 };

@@ -14,5 +14,9 @@
 		"allow-plugins": {
 			"automattic/jetpack-autoloader": true
 		}
+	},
+	"require": {
+		"web3p/web3.php": "dev-master",
+		"phpseclib/phpseclib": "^2.0"
 	}
 }
