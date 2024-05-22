@@ -2,6 +2,10 @@
 
 namespace PactsWooExtension\WooCommerce;
 
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 use Exception;
 use Web3\Contract;
 use phpseclib\Math\BigInteger;

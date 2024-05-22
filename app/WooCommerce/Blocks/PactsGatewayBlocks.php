@@ -2,6 +2,10 @@
 
 namespace PactsWooExtension\WooCommerce\Blocks;
 
+if (!defined('ABSPATH')) {
+	exit; // Exit if accessed directly
+}
+
 use PactsWooExtension\WooCommerce\PactsGateway;
 use Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType;
 
