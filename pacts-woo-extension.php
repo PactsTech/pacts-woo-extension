@@ -3,8 +3,8 @@
 /**
  * Plugin Name: Pacts Woo Extension
  * Version: 0.1.0
- * Author: The WordPress Contributors
- * Author URI: https://woo.com
+ * Author: Jake Breindel
+ * Author URI: https://pacts.tech
  * Text Domain: pacts-woo-extension
  * Domain Path: /languages
  *
