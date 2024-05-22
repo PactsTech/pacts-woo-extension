@@ -57,17 +57,18 @@ class PactsGateway extends \WC_Payment_Gateway
 				'type' => 'checkbox',
 				'default' => 'no'
 			],
-			'description' => [
-				'title' => esc_html__('Description', 'pacts'),
-				'type' => 'textarea',
-				'description' => esc_html__(
-					'This controls the description which the user sees during checkout.',
-					'pacts'
-				),
-				'default' => esc_html__(
-					'You can pay with supported networks and cryptocurrencies.',
-					'pacts'
-				),
+			'token' => [
+				'title' => esc_html__('Token', 'pacts'),
+				'label' => esc_html__('Token', 'pacts'),
+				'type' => 'select',
+				'required' => true,
+				'options' => [
+					'none' => esc_html__('Select One', 'pacts'),
+					'usdc' => esc_html__('USDC', 'pacts'),
+					'usdc' => esc_html__('USDC', 'pacts'),
+					'usdt' => esc_html__('USDT', 'pacts'),
+					'dai' => esc_html__('DAI', 'pacts'),
+				]
 			],
 			'arbitrumAddress' => [
 				'title' => esc_html__('Arbitrum Address', 'pacts'),

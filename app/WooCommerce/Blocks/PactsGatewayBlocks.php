@@ -48,10 +48,12 @@ final class PactsGatewayBlocks extends AbstractPaymentMethodType
 	public function get_payment_method_data()
 	{
 		$settings = $this->gateway->settings;
-		$addresses = PactsGateway::get_addresses($settings);
 		$supports = array_filter($this->gateway->supports, [$this->gateway, 'supports']);
+		$token = isset($settings['token']) ? $settings['token'] : 'none';
+		$addresses = PactsGateway::get_addresses($settings);
 		return [
 			'supports' => $supports,
+			'token' => $token,
 			'addresses' => $addresses
 		];
 	}

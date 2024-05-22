@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';
-import { decodeEntities } from '@wordpress/html-entities';
 import { getSetting } from '@woocommerce/settings';
 import * as viemChains from 'viem/chains';
 import { createPublicClient, createWalletClient, custom, publicActions } from 'viem';
@@ -13,9 +12,7 @@ defineCustomElements();
 
 const { CHECKOUT_STORE_KEY, CART_STORE_KEY } = window.wc.wcBlocksData;
 const settings = getSetting('pacts_data', {});
-const defaultLabel = __('Pacts Payments', 'woo-gutenberg-products-block');
-const { title, addresses, supports } = settings;
-const label = decodeEntities(title) || defaultLabel;
+const { token, addresses, supports } = settings;
 const chainNames = Object.keys(addresses).map((key) => key.replace('Address', ''));
 
 const transport = custom(window.ethereum);
@@ -84,22 +81,18 @@ const Content = ({ eventRegistration, emitResponse }) => {
   );
 };
 
-const Label = ({ components }) => {
-  // const { PaymentMethodLabel } = components;
-  // return <PaymentMethodLabel icon={<UsdcSvg />} />;
-  return (
-    <div style={{ flex: '1' }}>
-      <PactsRow token='usdc' />
-    </div>
-  );
-}
+const Label = () => (
+  <div style={{ flex: '1' }}>
+    <PactsRow token={token} />
+  </div>
+);
 
 registerPaymentMethod({
   name: 'pacts',
   label: <Label />,
   content: <Content />,
   edit: <Content />,
-  canMakePayment: () => true,
-  ariaLabel: label,
+  canMakePayment: () => !!token && token !== 'none',
+  ariaLabel: 'Pacts Payment Method',
   supports: { features: supports }
 });
