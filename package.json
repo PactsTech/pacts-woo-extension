@@ -16,10 +16,11 @@
 	},
 	"dependencies": {
 		"@pactstech/pacts-viem": "^10.0.1",
-		"@pactstech/react-components": "^1.5.0",
+		"@pactstech/react-components": "^1.6.0",
 		"@wordpress/hooks": "^3.57.0",
 		"@wordpress/i18n": "^4.57.0",
 		"abitype": "^1.0.2",
+		"big.js": "^6.2.1",
 		"viem": "^2.10.9"
 	},
 	"devDependencies": {

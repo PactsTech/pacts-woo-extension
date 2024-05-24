@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import Big from 'big.js';
+import { useEffect, useState } from 'react';
 import { __ } from '@wordpress/i18n';
 import { select } from '@wordpress/data';
 import { registerPaymentMethod } from '@woocommerce/blocks-registry';
@@ -19,24 +20,51 @@ const transport = custom(window.ethereum);
 const publicClient = createPublicClient({ transport });
 const walletClient = createWalletClient({ transport }).extend(publicActions);
 
+const findChainEntry = (chainId) => Object.entries(viemChains).find(([_, chain]) => {
+  return chain.id === chainId;
+});
+
 const Content = ({ eventRegistration, emitResponse }) => {
   const { onPaymentSetup } = eventRegistration;
+  const [activeChain, setActiveChain] = useState(null);
 
-  const onChainSelected = async (id) => walletClient.switchChain({ id });
+  const onChainSelected = (id) => {
+    const entry = findChainEntry(id);
+    if (Array.isArray(entry)) {
+      setActiveChain(entry[0]);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const chainId = await publicClient.getChainId();
+        onChainSelected(chainId);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onPaymentSetup(async () => {
+      const chain = !!activeChain ? viemChains[activeChain] : null;
+      if (!chain) {
+        return {
+          type: emitResponse.responseTypes.ERROR,
+          message: 'The selected chain does not exist'
+        };
+      }
+      await walletClient.switchChain({ id: chain.id });
       const checkoutStore = select(CHECKOUT_STORE_KEY);
       const cartStore = select(CART_STORE_KEY);
       const now = new Date().getTime();
       const orderId = `${checkoutStore.getOrderId()}-${now}`;
       const { items, totals } = cartStore.getCartData();
-      const chainId = await publicClient.getChainId();
-      const [chainName, chain] = Object.entries(viemChains).find(([_, chain]) => chain.id === chainId);
-      const address = addresses[chainName];
+      const address = addresses[activeChain];
       const processor = getProcessor({ chain, address, client: walletClient });
-      const price = Number(totals.total_price) / 100;
-      const shipping = Number(totals.total_shipping) / 100;
+      const price = new Big(totals.total_price).div(new Big(100)).toString();
+      const shipping = new Big(totals.total_shipping).div(new Big(100)).toString();
       const metadata = items?.map?.((item) => ({
         name: item.name,
         quantity: item.quantity
@@ -62,7 +90,7 @@ const Content = ({ eventRegistration, emitResponse }) => {
       return {
         type: emitResponse.responseTypes.SUCCESS,
         meta: {
-          paymentMethodData: { chain: chainName, hash, id: orderId }
+          paymentMethodData: { chain: activeChain, hash, id: orderId }
         }
       }
     });
@@ -70,13 +98,19 @@ const Content = ({ eventRegistration, emitResponse }) => {
   }, [
     emitResponse.responseTypes.ERROR,
     emitResponse.responseTypes.SUCCESS,
-    onPaymentSetup
+    onPaymentSetup,
+    activeChain
   ]);
 
   return (
     <>
       <span>Choose a Chain</span>
-      <ChainSelector chains={chainNames.join(',')} iconSize='4rem' />
+      <ChainSelector
+        chains={chainNames.join(',')}
+        activeChain={activeChain}
+        onChainSelected={(event) => onChainSelected(event.detail)}
+        iconSize='4rem'
+      />
     </>
   );
 };
