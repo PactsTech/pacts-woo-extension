@@ -15,7 +15,7 @@
 		"postinstall": "composer install"
 	},
 	"dependencies": {
-		"@pactstech/pacts-viem": "^10.0.1",
+		"@pactstech/pacts-viem": "^10.1.0",
 		"@pactstech/react-components": "^1.6.0",
 		"@wordpress/hooks": "^3.57.0",
 		"@wordpress/i18n": "^4.57.0",
