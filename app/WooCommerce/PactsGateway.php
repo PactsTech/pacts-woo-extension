@@ -18,7 +18,11 @@ class PactsGateway extends \WC_Payment_Gateway
 
 	const RPC_URLS = [
 		'arbitrum' => 'https://arb1.arbitrum.io/rpc',
-		'arbitrumSepolia' => 'https://sepolia-rollup.arbitrum.io/rpc'
+		'arbitrumSepolia' => 'https://sepolia-rollup.arbitrum.io/rpc',
+		'bsc' => 'https://rpc.ankr.com/bsc',
+		'base' => 'https://mainnet.base.org',
+		'avalanche' => 'https://api.avax.network/ext/bc/C/rpc',
+		'polygon' => 'https://polygon-rpc.com',
 	];
 
 	/**
@@ -83,6 +87,42 @@ class PactsGateway extends \WC_Payment_Gateway
 					'pacts'
 				),
 			],
+			'avalancheAddress' => [
+				'title' => esc_html__('Avalanche C-Chain Address', 'pacts'),
+				'type' => 'text',
+				'default' => null,
+				'description' => esc_html__(
+					'Pacts order processor address on Avalanche',
+					'pacts'
+				),
+			],
+			'baseAddress' => [
+				'title' => esc_html__('Base Address', 'pacts'),
+				'type' => 'text',
+				'default' => null,
+				'description' => esc_html__(
+					'Pacts order processor address on Base',
+					'pacts'
+				),
+			],
+			'bscAddress' => [
+				'title' => esc_html__('Binance Smart Chain Address', 'pacts'),
+				'type' => 'text',
+				'default' => null,
+				'description' => esc_html__(
+					'Pacts order processor address on Binance Smart Chain',
+					'pacts'
+				),
+			],
+			'polygonAddress' => [
+				'title' => esc_html__('Polygon Address', 'pacts'),
+				'type' => 'text',
+				'default' => null,
+				'description' => esc_html__(
+					'Pacts order processor address on Polygon',
+					'pacts'
+				),
+			],
 			'arbitrumSepoliaAddress' => [
 				'title' => esc_html__('Arbitrum Sepolia Address', 'pacts'),
 				'type' => 'text',
@@ -91,7 +131,7 @@ class PactsGateway extends \WC_Payment_Gateway
 					'Pacts order processor address on Arbitrum Sepolia',
 					'pacts'
 				),
-			]
+			],
 		];
 	}
 
@@ -118,9 +158,12 @@ class PactsGateway extends \WC_Payment_Gateway
 		$chains = array_keys(self::RPC_URLS);
 		$addresses = [];
 		foreach ($chains as $chain) {
-			$address = $settings[$chain . 'Address'];
-			if (isset($address) && $address !== '') {
-				$addresses[$chain] = $address;
+			$key = $chain . 'Address';
+			if (array_key_exists($key, $settings)) {
+				$address = $settings[$key];
+				if (isset($address) && $address !== '') {
+					$addresses[$chain] = $address;
+				}
 			}
 		}
 		return $addresses;
@@ -170,7 +213,7 @@ class PactsGateway extends \WC_Payment_Gateway
 		$multiplier = PactsGateway::pow(new BigInteger(10), $leftover);
 		$normalized = $order_total_big->multiply($multiplier);
 		if (!$contract_total->equals($normalized)) {
-			throw new Exception('contract total does not equal order total!');
+			throw new Exception('contract total does not equal order total');
 		}
 	}
 

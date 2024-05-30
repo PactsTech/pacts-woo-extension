@@ -2,8 +2,8 @@
 
 /**
  * Plugin Name: Pacts Woo Extension
- * Version: 0.1.0
- * Author: Jake Breindel
+ * Version: 1.0.0
+ * Author: Pacts Labs Inc.
  * Author URI: https://pacts.tech
  * Text Domain: pacts-woo-extension
  * Domain Path: /languages

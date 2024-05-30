@@ -1,0 +1,4 @@
+*** Pacts Woo Extension Changelog ***
+
+2024-05-29 - version 1.0.0
+* Initial release
