@@ -53,8 +53,8 @@ Yes! You can reach out to our contact email, or drop into our discord. We are al
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Screenshots are stored in the /assets directory.
-2. This is the second screen shot
+1. Pacts on the checkout screen
+2. Pacts admin panel
 
 == Changelog ==
 

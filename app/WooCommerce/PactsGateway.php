@@ -16,13 +16,35 @@ class PactsGateway extends \WC_Payment_Gateway
 
 	const PACTS_ABI = '[{"inputs":[{"internalType":"string","name":"storeName_","type":"string"},{"internalType":"uint256","name":"cancelBlocks_","type":"uint256"},{"internalType":"uint256","name":"disputeBlocks_","type":"uint256"},{"internalType":"address","name":"reporter","type":"address"},{"internalType":"bytes32","name":"reporterPublicKey_","type":"bytes32"},{"internalType":"address","name":"arbiter","type":"address"},{"internalType":"bytes32","name":"arbiterPublicKey_","type":"bytes32"},{"internalType":"address","name":"token_","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"AccessControlBadConfirmation","type":"error"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"bytes32","name":"neededRole","type":"bytes32"}],"name":"AccessControlUnauthorizedAccount","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"address","name":"reporter","type":"address"},{"indexed":false,"internalType":"string","name":"orderId","type":"string"}],"name":"Aborted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"address","name":"reporter","type":"address"},{"indexed":false,"internalType":"string","name":"orderId","type":"string"}],"name":"Canceled","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"address","name":"reporter","type":"address"},{"indexed":false,"internalType":"string","name":"orderId","type":"string"}],"name":"Completed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"address","name":"reporter","type":"address"},{"indexed":false,"internalType":"string","name":"orderId","type":"string"},{"indexed":false,"internalType":"bytes","name":"shipmentBuyer","type":"bytes"},{"indexed":false,"internalType":"bytes","name":"shipmentReporter","type":"bytes"}],"name":"Delivered","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"reporter","type":"address"},{"indexed":true,"internalType":"address","name":"arbiter","type":"address"},{"indexed":false,"internalType":"string","name":"storeName_","type":"string"},{"indexed":false,"internalType":"uint256","name":"cancelBlocks_","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"disputeBlocks_","type":"uint256"},{"indexed":false,"internalType":"address","name":"token_","type":"address"}],"name":"Deployed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"address","name":"arbiter","type":"address"},{"indexed":false,"internalType":"string","name":"orderId","type":"string"},{"indexed":false,"internalType":"string","name":"disputeUrl","type":"string"}],"name":"Disputed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"address","name":"reporter","type":"address"},{"indexed":false,"internalType":"string","name":"orderId","type":"string"},{"indexed":false,"internalType":"bytes","name":"shipmentBuyer","type":"bytes"},{"indexed":false,"internalType":"bytes","name":"shipmentReporter","type":"bytes"}],"name":"Failed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"address","name":"arbiter","type":"address"},{"indexed":false,"internalType":"string","name":"orderId","type":"string"},{"indexed":false,"internalType":"uint256","name":"sellerDeposit","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"buyerDeposit","type":"uint256"}],"name":"Resolved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousAdminRole","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"newAdminRole","type":"bytes32"}],"name":"RoleAdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleGranted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"address","name":"reporter","type":"address"},{"indexed":false,"internalType":"string","name":"orderId","type":"string"},{"indexed":false,"internalType":"bytes","name":"shipmentBuyer","type":"bytes"},{"indexed":false,"internalType":"bytes","name":"shipmentReporter","type":"bytes"}],"name":"Shipped","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"seller","type":"address"},{"indexed":true,"internalType":"address","name":"buyer","type":"address"},{"indexed":true,"internalType":"address","name":"reporter","type":"address"},{"indexed":false,"internalType":"string","name":"orderId","type":"string"},{"indexed":false,"internalType":"string","name":"storeName_","type":"string"},{"indexed":false,"internalType":"uint256","name":"price","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"shipping","type":"uint256"}],"name":"Submitted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"payee","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"Withdrawn","type":"event"},{"inputs":[],"name":"ARBITER_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEFAULT_ADMIN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"REPORTER_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"VERSION","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"}],"name":"abort","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"arbiterPublicKey","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"}],"name":"cancel","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"cancelBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"}],"name":"complete","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"}],"name":"deliver","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"},{"internalType":"string","name":"disputeUrl","type":"string"}],"name":"dispute","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"disputeBlocks","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"}],"name":"fail","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"getArbiter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"}],"name":"getOrder","outputs":[{"internalType":"uint256","name":"sequence_","type":"uint256"},{"internalType":"uint8","name":"state","type":"uint8"},{"internalType":"address","name":"buyer","type":"address"},{"internalType":"bytes32","name":"buyerPublicKey","type":"bytes32"},{"internalType":"address","name":"reporter","type":"address"},{"internalType":"bytes32","name":"reporterPublicKey_","type":"bytes32"},{"internalType":"address","name":"arbiter","type":"address"},{"internalType":"bytes32","name":"arbiterPublicKey_","type":"bytes32"},{"internalType":"uint256","name":"price","type":"uint256"},{"internalType":"uint256","name":"shipping","type":"uint256"},{"internalType":"uint256","name":"lastModifiedBlock","type":"uint256"},{"internalType":"bytes","name":"metadata","type":"bytes"},{"internalType":"bytes","name":"shipmentBuyer","type":"bytes"},{"internalType":"bytes","name":"shipmentReporter","type":"bytes"},{"internalType":"bytes","name":"shipmentArbiter","type":"bytes"},{"internalType":"string","name":"disputeUrl","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getReporter","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleAdmin","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getRoleMember","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleMemberCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getSeller","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"grantRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"callerConfirmation","type":"address"}],"name":"renounceRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"reporterPublicKey","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"},{"internalType":"uint256","name":"sellerDeposit","type":"uint256"},{"internalType":"uint256","name":"buyerDeposit","type":"uint256"}],"name":"resolve","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"revokeRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"},{"internalType":"bytes","name":"shipmentBuyer","type":"bytes"},{"internalType":"bytes","name":"shipmentReporter","type":"bytes"},{"internalType":"bytes","name":"shipmentArbiter","type":"bytes"}],"name":"ship","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"storeName","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"},{"internalType":"bytes32","name":"buyerPublicKey","type":"bytes32"},{"internalType":"address","name":"reporter","type":"address"},{"internalType":"address","name":"arbiter","type":"address"},{"internalType":"uint256","name":"price","type":"uint256"},{"internalType":"uint256","name":"shipping","type":"uint256"},{"internalType":"bytes","name":"metadata","type":"bytes"}],"name":"submit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes4","name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"token","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"arbiter","type":"address"},{"internalType":"bytes32","name":"arbiterPublicKey_","type":"bytes32"}],"name":"updateArbiter","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"reporter","type":"address"},{"internalType":"bytes32","name":"reporterPublicKey_","type":"bytes32"}],"name":"updateReporter","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"orderId","type":"string"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]';
 
-	const RPC_URLS = [
-		'arbitrum' => 'https://arb1.arbitrum.io/rpc',
-		'arbitrumSepolia' => 'https://sepolia-rollup.arbitrum.io/rpc',
-		'bsc' => 'https://rpc.ankr.com/bsc',
-		'base' => 'https://mainnet.base.org',
-		'avalanche' => 'https://api.avax.network/ext/bc/C/rpc',
-		'polygon' => 'https://polygon-rpc.com',
+	const CHAINS = [
+		'arbitrum' => [
+			'id' => 42161,
+			'url' => 'https://arb1.arbitrum.io/rpc'
+		],
+		'arbitrumSepolia' => [
+			'id' => 421614,
+			'url' => 'https://sepolia-rollup.arbitrum.io/rpc'
+		],
+		'bsc' => [
+			'id' => 56,
+			'url' => 'https://rpc.ankr.com/bsc'
+		],
+		'base' => [
+			'id' => 8453,
+			'url' => 'https://mainnet.base.org'
+		],
+		'avalanche' => [
+			'id' => 43114,
+			'url' => 'https://api.avax.network/ext/bc/C/rpc'
+		],
+		'optimism' => [
+			'id' => 10,
+			'url' => 'https://mainnet.optimism.io'
+		],
+		'polygon' => [
+			'id' => 137,
+			'url' => 'https://polygon-rpc.com'
+		]
 	];
 
 	/**
@@ -73,7 +95,6 @@ class PactsGateway extends \WC_Payment_Gateway
 				'options' => [
 					'none' => esc_html__('Select One', 'pacts'),
 					'usdc' => esc_html__('USDC', 'pacts'),
-					'usdc' => esc_html__('USDC', 'pacts'),
 					'usdt' => esc_html__('USDT', 'pacts'),
 					'dai' => esc_html__('DAI', 'pacts'),
 				]
@@ -114,6 +135,15 @@ class PactsGateway extends \WC_Payment_Gateway
 					'pacts'
 				),
 			],
+			'optimismAddress' => [
+				'title' => esc_html__('Optimism Address', 'pacts'),
+				'type' => 'text',
+				'default' => null,
+				'description' => esc_html__(
+					'Pacts order processor address on Optimism',
+					'pacts'
+				),
+			],
 			'polygonAddress' => [
 				'title' => esc_html__('Polygon Address', 'pacts'),
 				'type' => 'text',
@@ -140,9 +170,18 @@ class PactsGateway extends \WC_Payment_Gateway
 		global $woocommerce;
 		$order = wc_get_order($orderId);
 		$this->verify_order_payment($order);
-		$order->add_meta_data('chain', $_POST['chain']);
-		$order->add_meta_data('hash', $_POST['hash']);
-		$order->add_meta_data('pactsId', $_POST['id']);
+		$chain_param = $_POST['chain'];
+		$hash_param = $_POST['hash'];
+		$id_param = $_POST['id'];
+		$chain = self::CHAINS[$chain_param];
+		$address_key = $chain_param . 'Address';
+		$address = $this->settings[$address_key];
+		$url = sprintf("https://app.pacts.tech/chains/%d/processors/%s/orders/%s/ship", $chain['id'], $address, $id_param);
+		$order->add_meta_data('chain', $chain_param);
+		$order->add_meta_data('address', $address);
+		$order->add_meta_data('hash', $hash_param);
+		$order->add_meta_data('pactsId', $id_param);
+		$order->add_order_note('Pacts order ship url: ' . $url);
 		$order->save_meta_data();
 		$order->payment_complete();
 		$woocommerce->cart->empty_cart();
@@ -155,7 +194,7 @@ class PactsGateway extends \WC_Payment_Gateway
 
 	public static function get_addresses($settings)
 	{
-		$chains = array_keys(self::RPC_URLS);
+		$chains = array_keys(self::CHAINS);
 		$addresses = [];
 		foreach ($chains as $chain) {
 			$key = $chain . 'Address';
@@ -259,10 +298,10 @@ class PactsGateway extends \WC_Payment_Gateway
 
 	private function get_contract_instance($chain, $address, $abi)
 	{
-		if (!isset(self::RPC_URLS[$chain])) {
+		if (!isset(self::CHAINS[$chain])) {
 			throw new Exception($chain . ' chain is unsupported');
 		}
-		$url = self::RPC_URLS[$chain];
+		$url = self::CHAINS[$chain]['url'];
 		$contract = new Contract($url, $abi);
 		return $contract->at($address);
 	}
