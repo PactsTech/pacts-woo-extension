@@ -1,12 +1,24 @@
 {
 	"name": "pacts-woo-extension",
 	"version": "0.1.0",
-	"author": "The WordPress Contributors",
+	"author": "Jake Breindel",
 	"license": "GPL-3.0+",
 	"main": "build/index.js",
+	"files": [
+		"app/",
+		"assets/",
+		"languages/",
+		"vendor/",
+		"block.json",
+		"changelog.txt",
+		"LICENCE",
+		"pacts-woo-extension.php",
+		"README.*"
+	],
 	"scripts": {
 		"build": "wp-scripts build",
 		"format": "wp-scripts format",
+		"release": "npx semantic-release@23",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
 		"packages-update": "wp-scripts packages-update",
@@ -28,6 +40,7 @@
 		"@woocommerce/eslint-plugin": "^2.2.0",
 		"@wordpress/prettier-config": "^3.14.0",
 		"@wordpress/scripts": "^24.6.0",
-		"node-polyfill-webpack-plugin": "^3.0.0"
+		"node-polyfill-webpack-plugin": "^3.0.0",
+		"semantic-release": "^23.1.1"
 	}
 }
