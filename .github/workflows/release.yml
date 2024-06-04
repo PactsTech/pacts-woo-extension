@@ -30,6 +30,8 @@ jobs:
       run: npm ci
     - name: Build
       run: npm run build
+    - name: PluginZip
+      run: npm run plugin-zip
     - name: Release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
