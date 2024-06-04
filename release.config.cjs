@@ -16,7 +16,9 @@ module.exports = {
     [
       '@semantic-release/github',
       {
-        'assets': ['pacts-woo-extension.zip']
+        assets: [
+          { path: 'pacts-woo-extension.zip', label: 'Plugin Zip' },
+        ]
       }
     ]
   ]
