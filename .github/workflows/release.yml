@@ -20,7 +20,7 @@ jobs:
     - name: SetupNode
       uses: actions/setup-node@v2
       with:
-        node-version: '17'
+        node-version: '20'
     - name: SetupPHP
       uses: shivammathur/setup-php@v2
       with:
