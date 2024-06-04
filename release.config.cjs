@@ -18,7 +18,6 @@ module.exports = {
       {
         'assets': ['pacts-woo-extension.zip']
       }
-    ],
-    '@semantic-release/git'
+    ]
   ]
 };
